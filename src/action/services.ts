@@ -19,14 +19,14 @@ export async function deposit(
     await pool.query(query)
   } catch (error) {
     if (error instanceof Error) {
-      return { error: error.message }
+      return { success: false, message: error.message }
     } else {
-      return { error: 'Erro interno do servidor.' }
+      return { success: false, message: 'Erro interno do servidor.' }
     }
   }
 
   revalidatePath('/')
-  return { response: 'Depósito realizado com sucesso.' }
+  return { success: true, message: 'Depósito realizado com sucesso.' }
 }
 
 export async function transfer() {

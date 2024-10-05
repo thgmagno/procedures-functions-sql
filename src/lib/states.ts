@@ -1,4 +1,4 @@
 export interface ActionsDBFormState {
-  response?: string
-  error?: string
+  success?: boolean
+  message?: string
 }
