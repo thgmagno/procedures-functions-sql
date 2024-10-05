@@ -4,7 +4,7 @@ import { WithdrawSheet } from './Withdraw'
 
 export function Sheets() {
   return (
-    <div className="flex flex-col gap-3 md:flex-row">
+    <div className="flex flex-wrap gap-3">
       <DepositSheet />
       <WithdrawSheet />
       <TransferSheet />

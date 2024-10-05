@@ -1,8 +1,7 @@
 'use client'
 
+import { deposit } from '@/action/services'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetClose,
@@ -14,8 +13,26 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { ArrowUpIcon } from 'lucide-react'
+import { useEffect } from 'react'
+import { useFormState } from 'react-dom'
+import { toast } from 'sonner'
+import { MoneyInput } from '../common/MoneyInput'
+import { UserSelect } from '../common/UserSelect'
 
 export function DepositSheet() {
+  const [formState, action] = useFormState(deposit, {
+    success: false,
+    message: '',
+  })
+
+  useEffect(() => {
+    if (formState?.message) {
+      formState.success
+        ? toast.success(formState.message)
+        : toast.error(formState.message)
+    }
+  }, [formState])
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -24,32 +41,25 @@ export function DepositSheet() {
           Depósito
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent side="left">
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle>Depósito em Conta</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            Insira os detalhes para realizar o depósito na conta selecionada.
+            Confirme as informações e clique em confirmar para concluir.
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        <form action={action}>
+          <div className="grid gap-4 py-4">
+            <MoneyInput />
+            <UserSelect label="Destino" name="receiver" />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button type="submit">Confirmar</Button>
+            </SheetClose>
+          </SheetFooter>
+        </form>
       </SheetContent>
     </Sheet>
   )
